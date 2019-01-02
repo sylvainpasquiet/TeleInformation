@@ -24,21 +24,16 @@ struct DHT22_t {
 struct Stat_t {
   unsigned short ErreurChecksum;
   unsigned short OldErreurChecksum;
-  //unsigned short ActualErreurChecksum;
-  
+
   unsigned short Erreur;
   unsigned short OldErreur;
-  //unsigned short ActualErreur;
-  
-  //unsigned short ActualErreurTrameGrande;
+
   unsigned short OldErreurTrameGrande;
   unsigned short ErreurTrameGrande;
-  
-  //unsigned short ActualErreurTramePetite;
+
   unsigned short OldErreurTramePetite;
   unsigned short ErreurTramePetite;
 
-  //char ActualErreurTrame[30];
   char OldErreurTrame[30];
   char ErreurTrame[30];
 };
@@ -204,7 +199,7 @@ void Lecture(TeleInfo_t* const l_currentTI,Stat_t* const l_Statistiques)
         {
           (/*l_Statistiques->ActualErreurTrameGrande)++;*/l_Statistiques->ErreurTrameGrande)++;
           l_Etape=0;
-          Serial.write("Trame trop grande");
+          Serial.write("Trame trop grande\0");
           break;
         }
         if (l_c==13) 
@@ -247,7 +242,7 @@ void Lecture(TeleInfo_t* const l_currentTI,Stat_t* const l_Statistiques)
             Serial.print(l_Buffer);
             Serial.print(" ");
             Serial.write(l_Checksum);
-            Serial.write(" Erreur Checksum: ");
+            Serial.write(" Erreur Checksum: \0");
             Serial.print(l_Checksum);
             Serial.write(" ");
             Serial.println(l_MonCS);
@@ -275,10 +270,6 @@ char CalculChecksum(const char* const l_Frame)
 
 void ResetStatistiques()
 {
-//  gStatistiques.ActualErreurTrameGrande=0;
-//  gStatistiques.ActualErreurTramePetite=0;
-//  gStatistiques.ActualErreurChecksum=0;  
-//  gStatistiques.ActualErreur=0;   
   gStatistiques.ErreurTrameGrande=0;
   gStatistiques.ErreurTramePetite=0;
   gStatistiques.ErreurChecksum=0;
@@ -287,7 +278,6 @@ void ResetStatistiques()
   gStatistiques.OldErreurTramePetite=99;
   gStatistiques.OldErreurChecksum=99;
   gStatistiques.OldErreur=99; 
-//  strcpy(gStatistiques.ActualErreurTrame,"\0");
   strcpy(gStatistiques.ErreurTrame,"\0");
   strcpy(gStatistiques.OldErreurTrame,"Old\0");
 }
@@ -299,7 +289,7 @@ void before()
 
 void presentation()
 {
-  sendSketchInfo("Informations Garage", "2.20");
+  sendSketchInfo(F("Informations Garage\0"), F("2.20\0"));
   UpdateData_PAPP.Present(S_POWER);  
   UpdateData_ADPS.Present(S_POWER); 
   UpdateData_HC_HC.Present(S_POWER);    
@@ -328,10 +318,6 @@ void setup()
   gMyDHT2.begin();
   memset(&gCurrentTI,0,sizeof(gCurrentTI)); 
   memset(&gLastTI,0,sizeof(gLastTI));
-//  gStatistiques.ActualErreurChecksum     =(((unsigned long)loadState(0))<<8) + ((unsigned long)loadState(1));
-//  gStatistiques.ActualErreur             =(((unsigned long)loadState(2))<<8) + ((unsigned long)loadState(3));
-//  gStatistiques.ActualErreurTrameGrande  =(((unsigned long)loadState(4))<<8) + ((unsigned long)loadState(5));
-//  gStatistiques.ActualErreurTramePetite  =(((unsigned long)loadState(6))<<8) + ((unsigned long)loadState(7));
   //Serial.begin(1200,SERIAL_7E1);
   Serial.begin(1200,SERIAL_8N1);
 }
@@ -340,19 +326,17 @@ void loop()
 {
   float Temp;
   float hum;  
+  unsigned long ActualTime = millis();
   Lecture(&gCurrentTI,&gStatistiques);
 
   switch (gEtape)
   {     
     case 0:
       gMyDHT1.read(&gActualDHT22_1.Temp,&gActualDHT22_1.Hum);
-      gEtape=1;
-      break;   
-    case 1:
       gMyDHT2.read(&gActualDHT22_2.Temp,&gActualDHT22_2.Hum);
       gOldTime=millis();
       gEtape=250;
-      break; 
+      break;   
       
     case 100:
       if (DHT_SUCCESS==gMyDHT1.read(&Temp,&hum))
@@ -360,57 +344,17 @@ void loop()
         gActualDHT22_1.Temp  =(19.0 * gActualDHT22_1.Temp + Temp)/20;
         gActualDHT22_1.Hum  =(19.0 * gActualDHT22_1.Hum + hum)/20;
       }
-      gEtape=101;
-      break;
-    case 101:
       if (DHT_SUCCESS==gMyDHT2.read(&Temp,&hum))
       {
         gActualDHT22_2.Temp  =(19.0 * gActualDHT22_2.Temp + Temp)/20;
         gActualDHT22_2.Hum  =(19.0 * gActualDHT22_2.Hum + hum)/20;  
       }
-//      gEtape=200;  
-//      break;
-//      
-//    case 200:
-//      if (gStatistiques.ErreurTrameGrande!=gStatistiques.ActualErreurTrameGrande) 
-//      {
-//        gStatistiques.ErreurTrameGrande=gStatistiques.ActualErreurTrameGrande;
-//        saveState(4, (char)(((unsigned short)gStatistiques.ActualErreurTrameGrande>>8)& 0x00ff));
-//        saveState(5, (char)(((unsigned short)gStatistiques.ActualErreurTrameGrande)& 0x00ff));
-//      }
-//      gEtape=201;
-//      break; 
-//    case 201:
-//      if (gStatistiques.ErreurTramePetite!=gStatistiques.ActualErreurTramePetite) 
-//      {
-//        gStatistiques.ErreurTramePetite=gStatistiques.ActualErreurTramePetite;
-//        saveState(6, (char)(((unsigned short)gStatistiques.ActualErreurTramePetite>>8)& 0x00ff));
-//        saveState(7, (char)(((unsigned short)gStatistiques.ActualErreurTramePetite)& 0x00ff));
-//      }
-//      gEtape=202;
-//      break; 
-//    case 202:
-//      if (gStatistiques.Erreur!=gStatistiques.ActualErreur)
-//      {
-//        gStatistiques.Erreur=gStatistiques.ActualErreur;
-//        saveState(2, (char)(((unsigned short)gStatistiques.ActualErreur>>8)& 0x00ff));
-//        saveState(3, (char)(((unsigned short)gStatistiques.ActualErreur)& 0x00ff));
-//      }
-//      gEtape=203;
-//      break;        
-//    case 203:
-//      if (gStatistiques.ErreurChecksum!=gStatistiques.ActualErreurChecksum)
-//      {
-//        gStatistiques.ErreurChecksum=gStatistiques.ActualErreurChecksum;
-//        saveState(0, (char)(((unsigned short)gStatistiques.ActualErreurChecksum>>8)& 0x00ff));
-//        saveState(1, (char)(((unsigned short)gStatistiques.ActualErreurChecksum)& 0x00ff));
-//      }     
-      gOldTime=millis();
+      gOldTime=ActualTime;
       gEtape=250;
       break;  
             
     case 250:
-      if (((millis() - gOldTime) > 1000)&&((millis() - gLastUpdate)<200))  gEtape=100;
+      if (((ActualTime - gOldTime) > 2000)&&((ActualTime - gLastUpdate)>200)&&((ActualTime - gLastUpdate)>300))  gEtape=100;
       break;
   }
 
@@ -434,7 +378,7 @@ void loop()
   UpdateData_ERREUR_TRAME_GRANDE.Update(   gStatistiques.ErreurTrameGrande  ,&gStatistiques.OldErreurTrameGrande  ,&gLastUpdate);   
   UpdateData_ERREUR_TRAME_PETITE.Update(   gStatistiques.ErreurTramePetite  ,&gStatistiques.OldErreurTramePetite  ,&gLastUpdate);  
   UpdateData_TRAME_ERREUR.Update(          gStatistiques.ErreurTrame        ,gStatistiques.OldErreurTrame         ,&gLastUpdate);  
-  wait(50);           
+  //wait(50);           
 } 
 
 void receive(const MyMessage &l_message)
@@ -442,17 +386,5 @@ void receive(const MyMessage &l_message)
   if ((l_message.type==V_CUSTOM)&&(l_message.sensor==CHILD_ID_CMD_RESET_STATS))
   {
     ResetStatistiques(); 
-    
-//    saveState(0, (char)(((unsigned short)gStatistiques.ActualErreurChecksum>>8)& 0x00ff));
-//    saveState(1, (char)(((unsigned short)gStatistiques.ActualErreurChecksum)& 0x00ff));
-//    
-//    saveState(2, (char)(((unsigned short)gStatistiques.ActualErreur>>8)& 0x00ff));
-//    saveState(3, (char)(((unsigned short)gStatistiques.ActualErreur)& 0x00ff));
-//
-//    saveState(4, (char)(((unsigned short)gStatistiques.ActualErreurTrameGrande>>8)& 0x00ff));
-//    saveState(5, (char)(((unsigned short)gStatistiques.ActualErreurTrameGrande)& 0x00ff));
-//
-//    saveState(6, (char)(((unsigned short)gStatistiques.ActualErreurTramePetite>>8)& 0x00ff));
-//    saveState(7, (char)(((unsigned short)gStatistiques.ActualErreurTramePetite)& 0x00ff));
   }
 }
