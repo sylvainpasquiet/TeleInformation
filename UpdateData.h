@@ -1,7 +1,7 @@
 #ifndef UPDATADATA_H
 #define UPDATADATA_H
   #define INTERVAL_TRAME 700
-  #define INTERVAL_DATA_MAXI  10000
+  #define INTERVAL_DATA_MAXI  30000
     
   #if ARDUINO >= 100
    #include "Arduino.h"
@@ -51,6 +51,7 @@
       UpdateDataShort(unsigned char Child,unsigned char Type);
       void Update(unsigned short  l_Actual,unsigned short* l_Last,unsigned long* _LastGlobalRequest);
       void Update(unsigned short  l_Actual,unsigned short* l_Last,unsigned long* _LastGlobalRequest,unsigned long _Minimum,unsigned short _Delta);
+      void Update(unsigned short  l_Actual,unsigned short* l_Last,unsigned long* _LastGlobalRequest,unsigned long _Minimum,unsigned short _Delta,unsigned long _Minimum2,unsigned short _Delta2);
       void Present(unsigned char Type);
       
     private:

@@ -42,7 +42,7 @@ void UpdateDataFloat::Update(float l_Actual,float* l_Last,unsigned long* _LastGl
     {
       if (fabs(l_Actual-*l_Last)>=0.01)                 
       {
-          if (!send(_Msg.setSensor(_Child).setType(_Type).set((float)l_Actual,1),true))   {return(false);}
+          /*if (!*/send(_Msg.setSensor(_Child).setType(_Type).set((float)l_Actual,1),true);/*)   {return(false);}*/
           *l_Last=l_Actual;
           *_LastGlobalRequest=Time;
           _LastUpdate=Time;
@@ -64,7 +64,7 @@ void UpdateDataFloat::Update(float l_Actual,float* l_Last,unsigned long* _LastGl
     {
       if (fabs(l_Actual-*l_Last)>=0.01)                 
       {
-          if (!send(_Msg.setSensor(_Child).setType(_Type).set((float)l_Actual,1),true))   {return(false);}
+          /*if (!*/send(_Msg.setSensor(_Child).setType(_Type).set((float)l_Actual,1),true);/*)   {return(false);}*/
           *l_Last=l_Actual;
           *_LastGlobalRequest=Time;
           _LastUpdate=Time;
@@ -74,7 +74,7 @@ void UpdateDataFloat::Update(float l_Actual,float* l_Last,unsigned long* _LastGl
     {
       if (fabs(l_Actual-*l_Last) >= _Delta)                 
       {
-          if (!send(_Msg.setSensor(_Child).setType(_Type).set((float)l_Actual,1),true))   {return(false);}
+          /*if (!*/send(_Msg.setSensor(_Child).setType(_Type).set((float)l_Actual,1),true);/*)   {return(false);}*/
           *l_Last=l_Actual;
           *_LastGlobalRequest=Time;
           _LastUpdate=Time;
@@ -96,7 +96,7 @@ void UpdateDataChar::Update(unsigned char l_Actual,unsigned char* l_Last,unsigne
     {
       if (abs(l_Actual-*l_Last)>0)                 
       {
-          if (!send(_Msg.setSensor(_Child).setType(_Type).set(l_Actual),true))   {return(false);}
+          /*if (!*/send(_Msg.setSensor(_Child).setType(_Type).set(l_Actual),true);/*)   {return(false);}*/
           *l_Last=l_Actual;
           *_LastGlobalRequest=Time;
           _LastUpdate=Time;
@@ -117,7 +117,7 @@ void UpdateDataChar::Update(unsigned char   l_Actual,unsigned char*  l_Last,unsi
     {
       if ((strlen(l_Actual)!=strlen(l_Last))||(strcmp(l_Actual,l_Last)!=0))              
       {
-          if (!send(_Msg.setSensor(_Child).setType(_Type).set(l_Actual),true))   {return(false);}
+          /*if (!*/send(_Msg.setSensor(_Child).setType(_Type).set(l_Actual),true);/*)   {return(false);}*/
           strcpy(l_Last,l_Actual);
           *_LastGlobalRequest=Time;
           _LastUpdate=Time;
@@ -127,7 +127,7 @@ void UpdateDataChar::Update(unsigned char   l_Actual,unsigned char*  l_Last,unsi
     {
       if (abs(l_Actual-*l_Last)>=_Delta)                 
       {
-          if (!send(_Msg.setSensor(_Child).setType(_Type).set(l_Actual),true))   {return(false);}
+          /*if (!*/send(_Msg.setSensor(_Child).setType(_Type).set(l_Actual),true);/*)   {return(false);}*/
           *l_Last=l_Actual;
           *_LastGlobalRequest=Time;
           _LastUpdate=Time;
@@ -149,7 +149,7 @@ void UpdateDataShort::Update(unsigned short l_Actual,unsigned short* l_Last,unsi
     {
       if (abs(l_Actual-*l_Last)>0)                 
       {
-          if (!send(_Msg.setSensor(_Child).setType(_Type).set(l_Actual),true))   {return(false);}
+          /*if (!*/send(_Msg.setSensor(_Child).setType(_Type).set(l_Actual),true);/*)   {return(false);}*/
           *l_Last=l_Actual;
           *_LastGlobalRequest=Time;
           _LastUpdate=Time;
@@ -170,7 +170,7 @@ void UpdateDataShort::Update(unsigned short l_Actual,unsigned short* l_Last,unsi
     {
       if (abs(l_Actual-*l_Last)>0)                 
       {
-          if (!send(_Msg.setSensor(_Child).setType(_Type).set(l_Actual),true))   {return(false);}
+          /*if (!*/send(_Msg.setSensor(_Child).setType(_Type).set(l_Actual),true);/*)   {return(false);}*/
           *l_Last=l_Actual;
           *_LastGlobalRequest=Time;
           _LastUpdate=Time;
@@ -180,12 +180,53 @@ void UpdateDataShort::Update(unsigned short l_Actual,unsigned short* l_Last,unsi
     {
       if (abs(l_Actual-*l_Last) > _Delta)                 
       {
-          if (!send(_Msg.setSensor(_Child).setType(_Type).set(l_Actual),true))   {return(false);}
+          /*if (*/!send(_Msg.setSensor(_Child).setType(_Type).set(l_Actual),true);/*)   {return(false);}*/
           *l_Last=l_Actual;
           *_LastGlobalRequest=Time;
           _LastUpdate=Time;
       }
     }     
+  }
+  return(true);
+}
+void UpdateDataShort::Update(unsigned short l_Actual,unsigned short* l_Last,unsigned long* _LastGlobalRequest,unsigned long _Minimum,unsigned short _Delta,unsigned long _Minimum2,unsigned short _Delta2)
+{
+  unsigned long Time;
+  
+  Time=millis();
+  
+  if (Time-*_LastGlobalRequest > INTERVAL_TRAME)
+  {
+    if (Time-_LastUpdate > INTERVAL_DATA_MAXI)
+    {
+      if (abs(l_Actual-*l_Last)>0)                 
+      {
+          /*if (!*/send(_Msg.setSensor(_Child).setType(_Type).set(l_Actual),true);/*)   {return(false);}*/
+          *l_Last=l_Actual;
+          *_LastGlobalRequest=Time;
+          _LastUpdate=Time;
+      }
+    }  
+    if (Time - _LastUpdate > _Minimum)
+    {
+      if (abs(l_Actual-*l_Last) > _Delta)                 
+      {
+          /*if (!*/send(_Msg.setSensor(_Child).setType(_Type).set(l_Actual),true);/*)   {return(false);}*/
+          *l_Last=l_Actual;
+          *_LastGlobalRequest=Time;
+          _LastUpdate=Time;
+      }
+    }    
+    if (Time - _LastUpdate > _Minimum2)
+    {
+      if (abs(l_Actual-*l_Last) > _Delta2)                 
+      {+
+          /*if (!*/send(_Msg.setSensor(_Child).setType(_Type).set(l_Actual),true);/*)   {return(false);}*/
+          *l_Last=l_Actual;
+          *_LastGlobalRequest=Time;
+          _LastUpdate=Time;
+      }
+    }      
   }
   return(true);
 }
@@ -202,7 +243,7 @@ void UpdateDataLong::Update(unsigned long l_Actual,unsigned long* l_Last,unsigne
     {
       if (abs(l_Actual-*l_Last)>0)                 
       {
-          if (!send(_Msg.setSensor(_Child).setType(_Type).set(l_Actual),true))   {return(false);}
+          /*if (!*/send(_Msg.setSensor(_Child).setType(_Type).set(l_Actual),true);/*)   {return(false);}*/
           *l_Last=l_Actual;
           *_LastGlobalRequest=Time;
           _LastUpdate=Time;
@@ -223,7 +264,7 @@ void UpdateDataLong::Update(unsigned long  l_Actual,unsigned long* l_Last,unsign
     {
       if (abs(l_Actual-*l_Last)>0)                 
       {
-          if (!send(_Msg.setSensor(_Child).setType(_Type).set(l_Actual),true))   {return(false);}
+          /*if (!*/send(_Msg.setSensor(_Child).setType(_Type).set(l_Actual),true);/*)   {return(false);}*/
           *l_Last=l_Actual;
           *_LastGlobalRequest=Time;
           _LastUpdate=Time;
@@ -233,7 +274,7 @@ void UpdateDataLong::Update(unsigned long  l_Actual,unsigned long* l_Last,unsign
     {
       if (abs(l_Actual-*l_Last)>=_Delta)                 
       {
-          if (!send(_Msg.setSensor(_Child).setType(_Type).set(l_Actual),true))   {return(false);}
+          /*if (!*/send(_Msg.setSensor(_Child).setType(_Type).set(l_Actual),true);/*)   {return(false);}*/
           *l_Last=l_Actual;
           *_LastGlobalRequest=Time;
           _LastUpdate=Time;
@@ -256,7 +297,7 @@ void UpdateData_Char::Update(char* l_Actual,char*  l_Last,unsigned long* _LastGl
     {
       if ((strlen(l_Actual)!=strlen(l_Last))||(strcmp(l_Actual,l_Last)!=0))              
       {
-          if (!send(_Msg.setSensor(_Child).setType(_Type).set(l_Actual),true))   {return(false);}
+          /*if (!*/send(_Msg.setSensor(_Child).setType(_Type).set(l_Actual),true);/*)   {return(false);}*/
           strcpy(l_Last,l_Actual);
           *_LastGlobalRequest=Time;
           _LastUpdate=Time;

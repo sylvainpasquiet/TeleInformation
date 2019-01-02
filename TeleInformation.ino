@@ -358,10 +358,10 @@ void loop()
       break;
   }
 
-  UpdateData_PAPP.Update(                  gCurrentTI.PAPP                  ,&gLastTI.PAPP                        ,&gLastUpdate,2000,30);  
+  UpdateData_PAPP.Update(                  gCurrentTI.PAPP                  ,&gLastTI.PAPP                        ,&gLastUpdate,1500,1000,5000,50);  
   UpdateData_ADPS.Update(                  gCurrentTI.ADPS                  ,&gLastTI.ADPS                        ,&gLastUpdate);  
-  UpdateData_HC_HC.Update(                 gCurrentTI.HC_HC                 ,&gLastTI.HC_HC                       ,&gLastUpdate,(unsigned long)2000,(unsigned long)0);       
-  UpdateData_HC_HP.Update(                 gCurrentTI.HC_HP                 ,&gLastTI.HC_HP                       ,&gLastUpdate,(unsigned long)2000,(unsigned long)0);
+  UpdateData_HC_HC.Update(                 gCurrentTI.HC_HC                 ,&gLastTI.HC_HC                       ,&gLastUpdate,(unsigned long)7000,(unsigned long)0);       
+  UpdateData_HC_HP.Update(                 gCurrentTI.HC_HP                 ,&gLastTI.HC_HP                       ,&gLastUpdate,(unsigned long)8000,(unsigned long)0);
   UpdateData_IINST.Update(                 gCurrentTI.IINST                 ,&gLastTI.IINST                       ,&gLastUpdate);    
   UpdateData_ADCO.Update(                  gCurrentTI.ADCO                  ,gLastTI.ADCO                         ,&gLastUpdate);                
   UpdateData_OPTARIF.Update(               gCurrentTI.OPTARIF               ,gLastTI.OPTARIF                      ,&gLastUpdate);               
@@ -369,10 +369,10 @@ void loop()
   UpdateData_PTEC.Update(                  gCurrentTI.PTEC                  ,gLastTI.PTEC                         ,&gLastUpdate);  
   UpdateData_IMAX.Update(                  gCurrentTI.IMAX                  ,&gLastTI.IMAX                        ,&gLastUpdate);     
   UpdateData_HHPHC.Update(                 gCurrentTI.HHPHC                 ,gLastTI.HHPHC                        ,&gLastUpdate);     
-  UpdateData_1_TEMPERTURE.Update(          gActualDHT22_1.Temp              ,&gLastDHT22_1.Temp                   ,&gLastUpdate,5000,0.5);              
-  UpdateData_1_HUMIDITY.Update(            gActualDHT22_1.Hum               ,&gLastDHT22_1.Hum                    ,&gLastUpdate,7000,5.0);                   
-  UpdateData_2_TEMPERTURE.Update(          gActualDHT22_2.Temp              ,&gLastDHT22_2.Temp                   ,&gLastUpdate,5000,0.5);                 
-  UpdateData_2_HUMIDITY.Update(            gActualDHT22_2.Hum               ,&gLastDHT22_2.Hum                    ,&gLastUpdate,7000,5.0);           
+  UpdateData_1_TEMPERTURE.Update(          gActualDHT22_1.Temp              ,&gLastDHT22_1.Temp                   ,&gLastUpdate,11000,0.5);              
+  UpdateData_1_HUMIDITY.Update(            gActualDHT22_1.Hum               ,&gLastDHT22_1.Hum                    ,&gLastUpdate,1200,5.0);                   
+  UpdateData_2_TEMPERTURE.Update(          gActualDHT22_2.Temp              ,&gLastDHT22_2.Temp                   ,&gLastUpdate,13000,0.5);                 
+  UpdateData_2_HUMIDITY.Update(            gActualDHT22_2.Hum               ,&gLastDHT22_2.Hum                    ,&gLastUpdate,14000,5.0);           
   UpdateData_ERREUR_CS.Update(             gStatistiques.ErreurChecksum     ,&gStatistiques.OldErreurChecksum     ,&gLastUpdate);   
   UpdateData_ERREUR_MYSENSORS.Update(      gStatistiques.Erreur             ,&gStatistiques.OldErreur             ,&gLastUpdate);   
   UpdateData_ERREUR_TRAME_GRANDE.Update(   gStatistiques.ErreurTrameGrande  ,&gStatistiques.OldErreurTrameGrande  ,&gLastUpdate);   
