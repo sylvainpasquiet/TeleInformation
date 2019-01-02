@@ -1,7 +1,7 @@
 #ifndef UPDATADATA_H
 #define UPDATADATA_H
   #define INTERVAL_TRAME 700
-  #define INTERVAL_DATA_MAXI  30000
+  #define INTERVAL_DATA_MAXI  60000
     
   #if ARDUINO >= 100
    #include "Arduino.h"
