@@ -342,24 +342,29 @@ void UpdateData_Char::Update(char* l_Actual,char*  l_Last,unsigned long* _LastGl
 void UpdateDataFloat::Present(unsigned char Type)
 {
   present( _Child, Type);
+  wait(100);
 }
 
 void UpdateDataChar::Present(unsigned char Type)
 {
   present( _Child, Type);
+  wait(100);
 }
 
 void UpdateDataShort::Present(unsigned char Type)
 {
   present( _Child, Type);
+  wait(100);
 }
 
 void UpdateDataLong::Present(unsigned char Type)
 {
   present( _Child, Type);
+  wait(100);
 }
 
 void UpdateData_Char::Present(unsigned char Type)
 {
   present( _Child, Type);
+  wait(100);
 }

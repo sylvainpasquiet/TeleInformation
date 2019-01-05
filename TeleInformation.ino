@@ -111,17 +111,17 @@ MyDHT gMyDHT2(DHTPIN_2);
 #define CHILD_ID_CMD_RESET_STATS  220
 #define CHILD_ID_TRAME_ERREUR  230
 
-UpdateData_Char UpdateData_ADCO(                 CHILD_ID_ADCO,                  V_CUSTOM);
-UpdateData_Char UpdateData_OPTARIF(              CHILD_ID_OPTARIF,               V_CUSTOM);
+UpdateData_Char UpdateData_ADCO(                 CHILD_ID_ADCO,                  V_TEXT);
+UpdateData_Char UpdateData_OPTARIF(              CHILD_ID_OPTARIF,               V_TEXT);
 UpdateDataChar  UpdateData_ISOUSC(               CHILD_ID_ISOUSC,                V_CURRENT);
-UpdateData_Char UpdateData_PTEC(                 CHILD_ID_PTEC,                  V_CUSTOM);
+UpdateData_Char UpdateData_PTEC(                 CHILD_ID_PTEC,                  V_TEXT);
 UpdateDataChar  UpdateData_IINST(                CHILD_ID_IINST,                 V_CURRENT);
 UpdateDataChar  UpdateData_ADPS(                 CHILD_ID_ADPS,                  V_CURRENT);
 UpdateDataChar  UpdateData_IMAX(                 CHILD_ID_IMAX,                  V_CURRENT);
 UpdateDataShort UpdateData_PAPP(                 CHILD_ID_PAPP,                  V_WATT);
 UpdateDataLong  UpdateData_HC_HC(                CHILD_ID_HC_HC,                 V_KWH);
 UpdateDataLong  UpdateData_HC_HP(                CHILD_ID_HC_HP,                 V_KWH);
-UpdateData_Char UpdateData_HHPHC(                CHILD_ID_HHPHC,                 V_CUSTOM);
+UpdateData_Char UpdateData_HHPHC(                CHILD_ID_HHPHC,                 V_TEXT);
 UpdateDataFloat UpdateData_1_TEMPERTURE(         CHILD_ID_1_TEMPERTURE,          V_TEMP);
 UpdateDataFloat UpdateData_1_HUMIDITY(           CHILD_ID_1_HUMIDITY,            V_HUM);
 UpdateDataFloat UpdateData_2_TEMPERTURE(         CHILD_ID_2_TEMPERTURE,          V_TEMP);
@@ -289,27 +289,28 @@ void before()
 
 void presentation()
 {
-  sendSketchInfo(F("Informations Garage\0"), F("2.20\0"));
-  UpdateData_PAPP.Present(S_POWER);  
-  UpdateData_ADPS.Present(S_POWER); 
-  UpdateData_HC_HC.Present(S_POWER);    
-  UpdateData_HC_HP.Present(S_POWER);
+  sendSketchInfo(F("Informations Garage\0"), F("2.20\0")); 
+  UpdateData_PAPP.Present(S_POWER);    
+  UpdateData_ADPS.Present(S_POWER);
+  UpdateData_HC_HC.Present(S_POWER); 
+  UpdateData_HC_HP.Present(S_POWER); 
   UpdateData_IINST.Present(S_POWER);  
-  UpdateData_ADCO.Present(S_CUSTOM);              
-  UpdateData_OPTARIF.Present(S_CUSTOM);             
-  UpdateData_ISOUSC.Present(S_POWER);             
-  UpdateData_PTEC.Present(S_CUSTOM);
-  UpdateData_IMAX.Present(S_POWER);   
-  UpdateData_HHPHC.Present(S_CUSTOM);
-  UpdateData_1_TEMPERTURE.Present(S_TEMP);           
-  UpdateData_1_HUMIDITY.Present(S_HUM);                  
-  UpdateData_2_TEMPERTURE.Present(S_TEMP);              
-  UpdateData_2_HUMIDITY.Present(S_HUM);        
-  UpdateData_ERREUR_CS.Present(S_POWER);  
-  UpdateData_ERREUR_MYSENSORS.Present(S_POWER);   
-  UpdateData_ERREUR_TRAME_GRANDE.Present(S_POWER); 
-  UpdateData_ERREUR_TRAME_PETITE.Present(S_POWER); 
-  UpdateData_TRAME_ERREUR.Present(S_INFO);   
+  UpdateData_ADCO.Present(S_INFO);   
+  UpdateData_OPTARIF.Present(S_INFO);   
+  UpdateData_ISOUSC.Present(S_POWER);   
+  UpdateData_PTEC.Present(S_INFO);
+  UpdateData_IMAX.Present(S_POWER);  
+  UpdateData_HHPHC.Present(S_INFO);
+  UpdateData_1_TEMPERTURE.Present(S_TEMP);            
+  UpdateData_1_HUMIDITY.Present(S_HUM);                   
+  UpdateData_2_TEMPERTURE.Present(S_TEMP);           
+  UpdateData_2_HUMIDITY.Present(S_HUM);       
+  UpdateData_ERREUR_CS.Present(S_POWER);   
+  UpdateData_ERREUR_MYSENSORS.Present(S_POWER);     
+  UpdateData_ERREUR_TRAME_GRANDE.Present(S_POWER);   
+  UpdateData_ERREUR_TRAME_PETITE.Present(S_POWER);  
+  UpdateData_TRAME_ERREUR.Present(S_INFO);     
+  present(CHILD_ID_CMD_RESET_STATS, S_INFO); 
 }
 
 void setup()
@@ -383,7 +384,7 @@ void loop()
 
 void receive(const MyMessage &l_message)
 {
-  if ((l_message.type==V_CUSTOM)&&(l_message.sensor==CHILD_ID_CMD_RESET_STATS))
+  if ((l_message.type==V_TEXT)&&(l_message.sensor==CHILD_ID_CMD_RESET_STATS))
   {
     ResetStatistiques(); 
   }
